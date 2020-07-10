@@ -1,0 +1,19 @@
+@charset "UTF-8";
+body {background:skyblue;}
+#page {background:white; width:1000px;
+				margin:50px auto; padding:20px;
+				box-shadow:10px 10px 10px gray;}
+h1, h3 {text-align:center; font-style:Italic;}
+#nav span {background:skyblue; font-size:20px;
+						color:white; margin:20px; padding:5px;}
+#nav span:hover{background:white; color:skyblue;}
+#nav {background:skyblue; padding:10px; text-align:center;}
+.group {background:skyblue; width:800; overflow:hidden;
+				margin:10px auto; padding:10px;
+				border:5px solid black;}
+.box {background:white;
+			width:232px; height:150px; float:left;
+			margin:5px; text-align:center;
+			border-radius:10px 10px 10px 10px;}
+.box:hover {box-shadow:5px 5px 5px black;}
+.title, .price {font-size:10px; color:black;}

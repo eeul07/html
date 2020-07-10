@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>라이트박스 연습</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<style>
+	* {font-family:'맑은 고딕';}
+		h1{text-align:center;}
+		#content{width:760px; background:skyblue;
+							margin:auto; padding:10px; overflow:hidden;}
+		.box{width:150px; background:white; padding:10px;
+				margin:10px; float:left; color:gray;}
+		#menu{width:760px; margin:auto; margin-bottom:10px;}
+		#btnclose{margin:10px;}
+		#darken-background {
+			position:absolute;
+			top:0px;
+			left:0px;
+			right:0px;
+			height:100%;
+			display:none;
+			background:rgba(0, 0, 0, 0.5);
+			z-index:10000;
+			overflow-y:scroll;
+			}
+		#lightbox {
+			width:700px;
+			margin:20px auto;
+			padding:15px;
+			border: 1px solid #333333;
+			border-radius:5px;
+			background:white;
+			box-shadow:0px 5px 5px rgba(34, 25, 25, 0.4);
+			text-align:center;
+			}
+	</style>
+</head>
+<body>
+	<h1>LightBox 연습</h1>
+	<div id="content">
+		<div id="menu">
+			<button class="btn">1</button>
+			<button class="btn">2</button>
+			<button class="btn">3</button>
+			<button class="btn">4</button>
+			<button class="btn">5</button>
+		</div>  
+		<div class="box">
+			<img src="http://placehold.it/150x150">
+			<div class="pname">냉장고</div>
+			<div class="price">100만원</div>
+		</div>
+		<div class="box">
+			<img src="http://placehold.it/150x150">
+			<div class="pname">세탁기</div>
+			<div class="price">80만원</div>
+		</div>
+		<div class="box">
+			<img src="http://placehold.it/150x150">
+			<div class="pname">에어컨</div>
+			<div class="price">150만원</div>
+		</div>
+		<div class="box">
+			<img src="http://placehold.it/150x150">
+			<div class="pname">다리미</div>
+			<div class="price">30만원</div>
+		</div>
+		<div class="box">
+			<img src="http://placehold.it/150x150">
+			<div class="pname">믹서기</div>
+			<div class="price">40만원</div>
+		</div>
+	</div>
+	<!--라이트 박스-->
+	<div id="darken-background">
+		<div id="lightbox">
+			<img src="http://placehold.it/500x500"/>
+			<div id="txtName"></div>
+			<div id="txtPrice"></div>
+			<div><button id="btnclose">닫기</button></div>
+		</div>
+	</div>
+</body>
+<script>
+	$(".box").on("click", "img", function(){
+		var box=$(this).parent();
+		var pname=box.find(".pname").html();
+		var price=box.find(".price").html();
+		$("#txtName").html("상품명 : " + pname);
+		$("#txtPrice").html("가격 : " + price);
+		$("#darken-background").show();
+	});
+	$("#btnclose").on("click", function(){
+		$("#darken-background").hide();
+	});
+	$("#menu").on("click", ".btn", function(){
+		var num=$(this).html();
+		$("#content").css("width", 190*num);
+	});
+</script>
+</html>

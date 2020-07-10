@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연습 02</title>
+</head>
+<body>
+	<div>
+		<h1>폼(form)태그연습</h1>
+		<form>
+			<table border=1 width=500>
+				<tr>
+					<td width=100>아이디:</td>
+					<td><input type="text"></td>
+				</tr>
+				<tr>
+					<td width=100>비밀번호:</td>
+					<td><input type="password"></td>
+				</tr>
+				<tr>
+					<td width=100>사진등록:</td>
+					<td><input type="file"></td>
+				</tr>
+				<tr>
+					<td width=100>성별:</td>
+					<td>
+					<input type="radio" name="gender" value="M">남
+					<input type="radio" name="gender" value="F" checked>여
+					</td>
+				</tr>
+				<tr>
+					<td width=100>취미:</td>
+					<td>
+					<input type="checkbox" name="hobby1" value="e">운동
+					<input type="checkbox" name="hobby2" value="m" checked>영화감상
+					</td>
+				</tr>
+				<tr>
+					<td width=100>비고:</td>
+					<td>
+						<textarea rows="S" cols="50" name="remark"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan=2>
+						<input type="reset" value="취소">
+						<input type="submit" value="저장">
+						<input type="button" value="목록">
+				</tr>
+			</table>
+		</form>
+	</div>
+
+</body>
+</html>

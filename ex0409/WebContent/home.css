@@ -1,0 +1,14 @@
+@charset "UTF-8";
+* {font-family:'맑은 고딕';}
+body {background:skyblue;}
+#page {background:white; width:1000px; margin:auto;
+				box-shadow:10px 10px 10px orange; padding:30px;}
+#header h1 {text-align:center; font-size:50px; font-style:Italic;}
+#footer h3 {text-align:center; font-style:Italic;}
+.box {border:2px solid orange; padding:10px;
+			margin-bottom:10px; width:850px;}
+.title {line-height:10px;}
+#menu {width:100px; float:right; margin:10px;}
+a {text-decoration:none; line-height:40px;
+	color:orange; font-size:20px; font-weight:3px;}
+a:hover {background:orange; color:white;}

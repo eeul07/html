@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>연습 02</title>
+	<style>
+		* {font-family:'Times New Roman';}
+		body {background:#dfc7f9;}
+		#page {background:white; width:1000px; margin:auto;
+						box-shadow:10px 10px 10px gray;
+						border-radius:10px 10px 10px 10px;
+						padding:20px;}
+		#content {width:900px; border:1px solid gray;
+							margin:auto; padding:20px;}
+		.tbl {width:700px; margin:auto; border-collapse:collapse;
+				margin-top:20px;}
+		.tbl td {border:1px solid gray; padding:5px;}
+		.tbl .title {background:#fcfc96; text-align:center;}
+		.tbl .data:nth-child(2n+1) {background:#fefec7;}
+		.tbl .data:hover {background:#fcfc96;}
+		#menu {width:700px; margin:auto;}
+		a {text-decoration:none; color:gray; font-size:15px;}
+		a:hover {color:black;}
+		.tblInsert {width:700px; background:#dfc7f9;
+							border:1px solid gray; padding:20px; margin:20px auto;}
+		.tblInsert td {padding:5px;}
+		input {height:25px;}
+		.button {width:100px; height:35px; margin-right:30px;}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<div id="content">
+			<h3>Writing</h3>
+			<hr>
+			<div id="menu">
+				<a href="#">List</a>
+			</div>
+			<form class="frm">
+				<table class="tblInsert">
+					<tr>
+						<td>Title</td>
+						<td><input type="text" size=82></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+							<textarea rows="10" cols="90"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td colspan=2 style="text-align:center;">
+							<input type="button" type="reset" value="취소">
+							<input type="button" type="submit" value="저장">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

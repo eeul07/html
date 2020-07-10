@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>학생관리</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		body{background:#D0DAC0;}
+		#page{background:white; width:1000px; height:1000px; margin:auto;}
+		h1{text-align:center; padding-top:50px;}
+		select{height:23px;}
+		#students{background:#5A7377; color:white; width:500px; padding:10px; margin:auto;
+				text-align:center;}
+		#tbl{margin:auto; width:520px; border:2px solid #74476A; text-align:center;
+			border-collapse:collapse;}
+		.row:hover{background:#D0DAC0}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<h1>[ STUDENTS LIST ]</h1>
+		<div id="students">
+			학과 : <select id="dept">
+				<option>전산</option>
+				<option>전자</option>
+				<option>건축</option>
+				</select>
+			학번 : <input type="text" id="scode" maxlength=8 size=6 value="92414029">
+			성명 : <input type="text" id="sname">
+			<input type="button" id="btnSave" value="저장">
+		</div>
+		<br>
+		<table id="tbl" border=1 width=500></table>
+		<script id="temp" type="text/x-handlebars-template">
+			{{#each array}}
+				<tr class=row>
+					<td><input type="checkbox" class="chk"></td>
+					<td class=scode>{{scode}}</td>
+					<td>{{sname}}</td>
+					<td>{{dept}}</td>
+					<td><button>삭제</button></td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+</body>
+<script>
+	$("#tbl").hide();
+	var scode;
+	var sname;
+	var dept;
+	
+	$("#btnSave").on("click", function(){
+		if(!confirm("학생을 등록하시겠습니까?")) return;
+		scode=$("#scode").val();
+		sname=$("#sname").val();
+		dept=$("#dept").val();
+		
+		$.ajax({
+			type:"post",
+			url:"sinsert.jsp",
+			data:{"scode":scode, "sname":sname, "dept":dept},
+			dataType:"json",
+			success:function(data){
+				if(data.cnt==1){
+					alert("이미 존재하는 학생입니다.")
+				}
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+			}
+		});
+		$("#tbl").show();
+	});
+</script>
+</html>

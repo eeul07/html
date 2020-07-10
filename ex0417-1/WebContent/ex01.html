@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>댓글관리</title>
+	<style>
+		#page{width:800px; background:#aeb2fe; margin:auto; padding:10px;}
+		h1{text-align:center;}
+		.box{width:755px; border:1px solid white; padding:10px;
+			margin:auto; margin:10px;}
+		.date{width:150px; font-size:10px; color:white; float:left;}
+		#content{margin:10px}
+		.btnLike{color:red;}
+		.cnt{font-size:13px;}
+		.like{float:right;}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<h1>[댓글관리]</h1>
+		<div>
+			<input type="text" id="content" size=50>
+			<input type="button" value="저장" id="btnInsert">
+			<div class="box">
+				<div class="title">
+					<span class="date">2020/04/17 13:00:00</span>
+					<div class="like" rno="1">
+					<input class="btnLike" type="button" value="♥">
+					<span class="cnt">120</span>
+					</div>
+				</div>
+				<div class="content">
+					오늘은 금요일 내일 쉰다 야호
+				</div>
+			</div>
+			<div class="box">
+				<div class="title">
+					<span class="date">2020/04/17 14:00:00</span>
+					<div class="like" rno="2">
+					<input class="btnLike" type="button" value="♥">
+					<span class="cnt">170</span>
+					</div>
+				</div>
+				<div class="content">
+					비가 주룩주룩
+				</div>
+			</div>
+			<div class="box">
+				<div class="title">
+					<span class="date">2020/04/17 15:00:00</span>
+					<div class="like" rno="3">
+					<input class="btnLike" type="button" value="♥">
+					<span class="cnt">100</span>
+					</div>
+				</div>
+				<div class="content">
+					배가 부른데 단게 먹고싶다 꿀
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

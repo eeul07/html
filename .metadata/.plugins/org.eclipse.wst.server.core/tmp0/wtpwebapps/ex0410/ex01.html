@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>연습 01</title>
+	<style>
+		* {font-family:'Times New Roman';}
+		body {background:#dfc7f9;}
+		#page {background:white; width:1000px; margin:auto;
+						box-shadow:10px 10px 10px gray;
+						border-radius:10px 10px 10px 10px;
+						padding:20px;}
+		#content {width:900px; border:1px solid gray;
+							margin:auto; padding:20px;}
+		.tbl {width:700px; margin:auto; border-collapse:collapse;
+				margin-top:20px;}
+		.tbl td {border:1px solid gray; padding:5px;}
+		.tbl .title {background:#fcfc96; text-align:center;}
+		.tbl .data:nth-child(2n+1) {background:#fefec7;}
+		.tbl .data:hover {background:#fcfc96;}
+		#menu {width:700px; margin:auto;}
+		a {text-decoration:none; color:gray; font-size:15px;}
+		a:hover {color:black;}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<div id="content">
+			<h3>BOARD</h3>
+			<hr>
+			<div id="menu">
+				<a href="#">Writing</a>
+			</div>
+			<table class="tbl">
+				<tr class="title">
+					<td>No.</td>
+					<td>Title</td>
+					<td>Date</td>
+				</tr>
+				<tr class="data">
+					<td>01</td>
+					<td>Here is Title 01...</td>
+					<td>2020-04-01</td>
+				</tr>
+				<tr class="data">
+					<td>02</td>
+					<td>Here is Title 02...</td>
+					<td>2020-04-02</td>
+				</tr>
+				<tr class="data">
+					<td>03</td>
+					<td>Here is Title 03...</td>
+					<td>2020-04-03</td>
+				</tr>
+				<tr class="data">
+					<td>04</td>
+					<td>Here is Title 04...</td>
+					<td>2020-04-04</td>
+				</tr>
+				<tr class="data">
+					<td>05</td>
+					<td>Here is Title 05...</td>
+					<td>2020-04-05</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

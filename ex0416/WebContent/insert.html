@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>상품등록</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<link rel="stylesheet" href="home.css">
+</head>
+<body>
+	<h1>[상품등록]</h1>
+	<div id="content">
+		<form name="frm" action="sqlInsert.jsp">
+			상품명 : <input type="text" name="pname">
+			<hr>
+			가격 : <input type="text" name="price">
+			<hr>
+			<input type="submit" value="저장">
+			<input type="reset" value="취소">
+			<input type="button" value="목록" id="btnList">
+		</form>
+	</div>
+</body>
+<script>
+$("#btnList").on("click", function(){
+	frm.action="list.jsp";
+	frm.submit();
+});
+$(frm).submit(function(event){
+    event.preventDefault(); //event 동작을 막는다.
+    if(confirm("등록하시겠습니까?")==false) return;
+    
+    var pname=$(frm.pname).val();
+    var price=$(frm.price).val();
+    
+    if(pname.replace(/[가-힣]/g, '') || pname==""){ //한글이 아닌 글자가 있는지
+       alert("한글만 입력하세요!");
+       $(frm.pname).val("");
+       $(frm.pname).focus();
+    }else if(price.replace(/[0-9]/g,'') || price==""){//숫자가 아닌 글자가 있는지
+       alert("숫자만 입력하세요!");
+       $(frm.price).val("");
+       $(frm.price).focus();
+    }else{
+       frm.submit();
+    }      
+ });
+</script>
+</html>

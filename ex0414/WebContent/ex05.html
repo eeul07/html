@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>주소수정</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+	<h1>[주소수정]</h1>
+	<form name="frm" action="update.jsp">
+		<input type="hidden" name="ano" value="1">
+		이름: <input type="text" name="txtName" value="홍길동">
+		<hr>
+		주소: <input type="text" name="txtAddress">
+		<hr>
+		<input type="submit" value="수정" id="btnUpdate">
+		<input type="reset" value="취소" id="btnCancel">
+		<input type="button" value="목록" id="btnList">
+		<input type="button" value="삭제" id="btnDelete">
+	</form>
+</body>
+<script>
+	$("#btnDelete").click(function(){
+		if(confirm("삭제하시겠습니까?")){
+			frm.action="delete.jsp";
+			frm.submit();
+		};
+	});
+	$("#btnList").click(function(){
+		location.href="list.jsp";
+	});
+	$(frm).submit(function(event){
+		if(confirm("수정하시겠습니까?")){
+			var name=$(frm.txtName).val();
+			var address=$(frm.txtAddress).val();
+			if(name.replace(/[가-힣]/g, "")!=0){
+				alert("이름을 입력하세요!");
+				$(frm.txtName).focus();
+				event.preventDefault();
+			}else if(address==""){
+				alert("주소를 입력하세요!");
+				$(frm.txtAddress).focus();
+				event.preventDefault();
+			}
+		}else{
+			event.preventDefault();
+		}
+	});
+</script>
+</html>

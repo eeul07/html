@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>지역검색</title>
+	<style>
+		body{text-align:center;}
+		#tbl{margin:auto;}
+		.tr:hover{background:pink;}
+		#pagination{text-align:center;}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+		<h1>[지역검색]</h1>
+		<div id="search">
+			검색수 : <span id="total"></span>
+			<input type="text" value="학익동 분식" id="txtSearch">
+			<input type="button" value="검색" id="btnSearch">
+		</div>
+		<br>
+		<table id="tbl" width=700 border=1></table>
+		<br>
+		<div id="pagination">
+			<button id="btnPre">◀</button>
+			<button id="btnNext">▶</button>
+		</div>
+</body>
+<script>
+	var query=$("#txtSearch").val();
+	var page=1;
+	var is_end=false;
+	
+	getList();
+	
+	$("#btnNext").on("click", function(){
+		if(!is_end){
+			page = page + 1;
+			getList();
+		}else{
+			alert("마지막 페이지 입니다.")
+		}
+	});
+	
+	$("#btnPre").on("click", function(){
+		if(page!=1){
+			page = page - 1;
+			getList();
+		}else{
+			alert("처음 페이지 입니다.")
+		}
+	});
+	
+	$("#btnSearch").on("click", function(){
+		query=$("#txtSearch").val();
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(){
+	      query=$("#txtSearch").val();
+	      getList();
+	}); // 서치버튼을 클릭하지않아도 결과가 나옴
+	
+	function getList(){
+		$.ajax({ // ajax 실행
+			type:"get",
+			url:"https://dapi.kakao.com/v2/local/search/keyword.json",
+			headers:{"Authorization": "KakaoAK adee5ecf94538b5f76df2941d30ef6e0"},
+			dataType:"json",
+			data:{"query":query, "page":page, "size":10},
+			
+			success:function(data){
+				var total=data.meta.total_count;
+				is_end=data.meta.is_end;
+				
+				$("#total").html("<b>" + total + "건</b>");
+				 
+				var str="";
+				$(data.documents).each(function(){
+					var place=this.place_name;
+					var address=this.address_name;
+					var tel=this.phone;
+					str += "<tr class=tr>";
+					str += "<td>" + place + "</td>";
+					str += "<td>" + address + "</td>";
+					str += "<td>" + tel + "</td>";
+					str += "</tr>";
+				});
+				$("#tbl").html(str);
+			}
+		});
+		$("#page").html(page);
+	}
+</script>
+</html>

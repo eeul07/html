@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+   <meta charset="UTF-8">
+   <title>Insert title here</title>
+</head>
+<body>
+   <table id=tbl>
+      <tr class=row sname="김창식 " address="인천">
+         <td>1</td> <!-- sname, address는 속성 브라우저에 표시 x -->
+         <td><button >출력</button></td>
+      </tr>
+      <tr class=row sname="김바질" address="서울">
+         <td>2</td>
+         <td><button >출력</button></td>
+      </tr>
+   </table>
+   
+   <div>
+      <h1 id=sname></h1>
+      <h1 id=address></h1>
+      <input type="text" id="print">
+   </div>
+</body>
+<script>
+   $("#tbl").on("click", ".row button", function(){
+      var row=$(this).parent().parent(); // button < td < tr(row)
+      var sname=row.attr("sname"); 
+      var address=row.attr("address");
+      
+      $("#sname").html(sname);
+      $("#address").html(address);
+      $("#print").val(sname+address); 
+   });
+</script>
+</html>

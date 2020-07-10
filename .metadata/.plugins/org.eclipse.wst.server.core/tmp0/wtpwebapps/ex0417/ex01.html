@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>성적처리</title>
+	<style>
+		h1, h3{text-align:center;}
+		#content{width:700px; background:#fd8fa5;
+						margin:auto; color:white; padding:10px;}
+		#tbl{margin:auto; text-align:center;
+				border-collapse:collapse;}
+		input{text-align:right;}
+	</style>
+</head>
+<body>
+	<h1>[성적처리]</h1>
+	<div id="content">
+		이름 : <input type="text" id="txtName">
+		<hr>
+		국어 : <input type="text" id="txtKor">
+		<hr>
+		영어 : <input type="text" id="txtEng">
+		<hr>
+		수학 : <input type="text" id="txtMat">
+		<hr>
+		<input type="button" value="등록" id="btnInsert">
+		
+		<h3>[성적목록]</h3>
+		<table id="tbl" border=1 width=600>
+			<tr class="title">
+				<td>No.</td>
+				<td>이름</td>
+				<td>국어</td>
+				<td>영어</td>
+				<td>수학</td>
+				<td>수정</td>
+				<td>삭제</td>
+			</tr>
+			<tr class="row">
+				<td>1</td>
+				<td>홍길동</td>
+				<td><input class="kor" type="text" size=2 value=90></td>
+				<td><input class="eng" type="text" size=2 value=80></td>
+				<td><input class="mat" type="text" size=2 value=70></td>
+				<td><button class="update">수정</button></td>
+				<td><button class="delete">삭제</button></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

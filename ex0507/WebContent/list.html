@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>학과검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+</head>
+<body>
+	<h1>[ 학과검색 ]</h1>
+	<select id="dept">
+		<option>전산</option>
+		<option>건축</option>
+		<option>전자</option>
+	</select>
+	<input type="button" value="검색" id="btnSearch">
+	<div>
+		<h1>[ 교수목록 ]</h1>
+		<table id="tbl" width=700 border=1></table>
+		<script id="temp" type="text/x-handlebars-template">
+			<tr class=title>
+				<td>교수번호</td>
+				<td>교수명</td>
+				<td>학과</td>
+			</tr>
+			{{#each pArray}}
+				<tr class=row>
+					<td class=pcode>{{pcode}}</td>
+					<td>{{pname}}</td>
+					<td>{{dept}}</td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+	<div id="penroll">
+			교수인원수 : <span id="pcnt"></span>
+	</div>
+	<div>
+		<h1>[ 학생목록 ]</h1>
+		<table id="tbl1" width=700 border=1></table>
+		<script id="temp1" type="text/x-handlebars-template">
+			<tr class=title>
+				<td>학번</td>
+				<td>학생명</td>
+				<td>학과</td>
+			</tr>
+			{{#each sArray}}
+				<tr class=row>
+					<td class=scode>{{scode}}</td>
+					<td>{{sname}}</td>
+					<td>{{dept}}</td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+	<div id="senroll">
+			학생인원수 : <span id="scnt"></span>
+	</div>
+	<div id="enroll">
+		<h1>[ 수강신청목록 ]</h1>
+		<table id="tbl2" width=700 border=1></table>
+		<script id="temp2" type="text/x-handlebars-template">
+			<tr class=title>
+				<td>강좌번호</td>
+				<td>강좌명</td>
+				<td>점수</td>
+			</tr>
+			{{#each array}}
+				<tr class=row>
+					<td class=lcode>{{lcode}}</td>
+					<td>{{lname}}</td>
+					<td>{{grade}}</td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+	<div id="cenroll">
+		<span id="cnt"></span>
+	</div>
+</body>
+<script>
+	$("#enroll").hide();
+	
+	$("#tbl1").on("click", ".row", function(){
+		var scode=$(this).find(".scode").html();
+		$.ajax({
+				type:"get",
+				url:"elist.jsp",
+				data:{"scode":scode},
+				dataType:"json",
+				success:function(data){
+					$("#enroll").show();
+					var temp=Handlebars.compile($("#temp2").html());
+					$("#tbl2").html(temp(data));
+					$("#cnt").html("평균 : " + data.avg + "   수강신청과목 : " + data.cnt);
+				}
+		});
+	});
+	
+	$("#btnSearch").on("click", function(){
+		var dept=$("#dept").val();
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			data:{"dept":dept},
+			dataType:"json",
+			success:function(data){
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+				$("#pcnt").html(data.pcnt);
+				
+				var temp=Handlebars.compile($("#temp1").html());
+				$("#tbl1").html(temp(data));
+				$("#scnt").html(data.scnt);
+			}
+		});
+	});
+</script>
+</html>

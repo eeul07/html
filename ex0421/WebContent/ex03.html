@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>이미지 검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		#container{width:760px; background:#fd8a8a; overflow:hidden;}
+		.box{width:150px; padding:10px; margin:10px;
+				background:white; float:left;}
+		.box:hover{box-shadow:10px 10px 10px #e40101;}
+		.title, .authors{width:150px; font-size:15px; text-align:center;
+									text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		.price{text-align:center;}
+		#pagination, #search{margin:10px;}
+		img {cursor:pointer;} /* 커서를 이미지 위에 올려두면 손모양으로 변함 */
+		#darken-background {
+			position:absolute;
+			top:0px;
+			left:0px;
+			right:0px;
+			height:100%;
+			display:none;
+			background:rgba(0, 0, 0, 0.5);
+			z-index:10000;
+			overflow-y:scroll;
+			}
+		#lightbox {
+			width:700px;
+			margin:20px auto;
+			padding:15px;
+			border: 1px solid #333333;
+			border-radius:5px;
+			background:white;
+			box-shadow:0px 5px 5px rgba(34, 25, 25, 0.4);
+			text-align:center;
+			}
+	</style>
+</head>
+<body>
+	<span><a href="ex01.html">주소검색</a></span>
+	<span><a href="ex02.html">도서검색</a></span>
+	<span><a href="ex03.html">이미지검색</a></span>
+   <h1>[ 이미지 검색 ]</h1>
+   <div id="search">
+         검색수:<span id="total"></span>
+         <input type="text" id="txtSearch" value="강아지">
+         <input type="button" id="btnSearch" value="검색">
+   </div>
+   
+   <div id=container></div>
+   <script id="temp" type="text/x-handlebars-template">
+   {{#each documents}}
+      <div class=box>
+         <img src={{thumbnail_url}} width=150 url={{image_url}}>
+      </div>
+   {{/each}}
+   </script>
+   <div id="pagination">
+         <button id="btnPre">이전</button>
+         <button id="btnNext">다음</button>
+         현재페이지:<span id="page"></span>
+   </div>
+   <!--라이트 박스-->
+	<div id="darken-background">
+		<div id="lightbox">
+			<img id="image" src="http://placehold.it/400x400">
+			<br>
+			<div><button id="btnclose">닫기</button></div>
+		</div>
+	</div> 
+</body>
+<script>
+   var page=1;
+   var is_end=false;
+   getList();
+   
+   $("#container").on("click", ".box img", function(){
+		var url=$(this).attr("url");
+		$("#image").attr("src", url);
+		$("#image").attr("width", "600");
+		$("#darken-background").show();
+	});
+	$("#btnclose").on("click", function(){
+		$("#darken-background").hide();
+	});
+	
+   $("#btnSearch").on("click", function(){
+      page=1;
+      query=$("#txtSearch").val();
+      getList();
+   });
+   
+   $("#txtSearch").keydown(function(key){
+      if(key.keyCode==13){
+    	 page=1;
+         query=$("txtSearch").val();
+         getList();
+      }
+   });
+   
+   $("#btnNext").on("click", function(){
+      if(is_end==false){
+         page=page+1;
+         getList();
+      }else{
+         alert("마지막 페이지입니다.")
+      }
+   });
+   
+   $("#btnPre").on("click", function(){
+      if(page!=1){
+         page=page-1;
+         getList();
+      }else{
+         alert("첫 페이지입니다.")
+      }
+   });
+   
+   function getList() {
+      var query=$("#txtSearch").val();
+      $.ajax({
+         type:"get",
+         url:"https://dapi.kakao.com/v2/search/image",
+         headers:{"Authorization" : "KakaoAK f00f0452e4406b9d7fb8259e0f0f407f"},
+         dataType:"json",
+         data:{"query":query, "page":page, "size":12},
+         success:function(data) {
+            var total=data.meta.pageable_count;
+            is_end=data.meta.is_end;
+            $("#total").html(total+"건");
+            
+            var temp = Handlebars.compile($("#temp").html());  // temp의 html을 compile해서 temp에 넣어줌
+            $("#container").html(temp(data)) // temp에 데이터를 넣고 tbl에 넣어줌
+         }
+      });   
+      $("#page").html(page);
+   }
+</script>
+</html>

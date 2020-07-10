@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>강좌관리</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		body{background:#D0DAC0;}
+		#page{background:white; width:1000px; height:1000px; margin:auto;}
+		h1{text-align:center; padding-top:50px;}
+		select{height:23px;}
+		#insert, #info{background:#5A7377; color:white; width:500px; padding:10px; margin:auto;
+						text-align:center;}
+		#tbl, #tbl1{margin:auto; width:520px; border:3px solid #74476A; text-align:center;
+			border-collapse:collapse;}
+		.row:hover{background:#B3ABBD}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<h1>[ COURSES LIST ]</h1>
+		<div id="insert">
+			학번 : <input type="text" id="lcode" maxlength=4 size=5>
+			성명 : <input type="text" id="lname">
+			<input type="button" id="btnSave" value="저장">
+		</div>
+		<br>
+		<table id="tbl" border=1 width=500></table>
+		<script id="temp" type="text/x-handlebars-template">
+			{{#each array}}
+				<tr class=row>
+					<td class=lcode>{{lcode}}</td>
+					<td>{{lname}}</td>
+					<td><button>삭제</button></td>
+				</tr>
+			{{/each}}
+		</script>
+		<br>
+		<div id="info">
+			<span id="cnt"></span>
+		</div>
+		<table id="tbl1" border=1 width=500></table>
+		<script id="temp1" type="text/x-handlebars-template">
+			{{#each array}}
+				<tr class=row>
+					<td class=scode>{{scode}}</td>
+					<td>{{sname}}</td>
+					<td>{{grade}}</td>
+					<td><button>수정</button></td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+</body>
+<script>
+	getList();
+	
+	// 수강신청학생 보기
+	$("#tbl").on("click", ".row", function(){
+		$("#tbl1").hide();
+		var lcode=$(this).find(".lcode").html();
+		$.ajax({
+			type:"get",
+			url:"celist.jsp",
+			data:{"lcode":lcode},
+			dataType:"json",
+			success:function(data){
+				if(data.cnt==0){
+					alert("수강신청한 학생이 없습니다.");
+					getList();
+				}else{
+					$("#info").html("강좌번호 : " + lcode + " | 수강신청인원 : " + data.cnt);
+					var temp=Handlebars.compile($("#temp1").html());
+			         $("#tbl1").html(temp(data));
+			         $("#tbl1").show();
+				}
+			}
+		});
+	});
+	// 삭제
+	$("#tbl").on("click", ".row button", function(){
+		var row=$(this).parent().parent();
+		var lcode=row.find(".lcode").html();
+		$.ajax({
+			type:"post",
+			url:"cdelete.jsp",
+			data:{"lcode":lcode},
+			dataType:"json",
+			success:function(data){
+				var cnt=data.cnt;
+				if(cnt==0){
+					alert("삭제완료");
+					getList();
+				}else{
+					alert("이 강좌를 수강신청한 학생이 있습니다.");
+				}
+			}
+		});
+	});
+	
+	// 강좌목록
+	function getList() {
+	   $.ajax({
+	      type:"get",
+	      url:"clist.jsp",
+	      dataType:"json",
+	      success:function(data){
+	         var temp=Handlebars.compile($("#temp").html());
+	         $("#tbl").html(temp(data));
+	      }
+	   });
+	}
+	
+	// 입력
+	function insert(){
+		var lcode=$("#lcode").val();
+		var lname=$("#lname").val();
+		$.ajax({
+			type:"post",
+			url:"cinsert.jsp",
+			data:{"lcode":lcode, "lname":lname},
+			dataType:"json",
+			success:function(data){
+				if(data.cnt==0){
+					alert("저장완료");
+					getList();
+				}else{
+					alert("이미 존재하는 강좌입니다.")
+				}
+			}
+		});
+	}
+	
+	// 저장버튼을 누를시
+	$("#btnSave").on("click", function(){
+		insert();
+	});
+	
+	// 엔터키를 누를시
+	$("#lname").keydown(function(key){
+		if(key.keyCode==13){
+			insert();
+		}
+	});
+</script>
+</html>

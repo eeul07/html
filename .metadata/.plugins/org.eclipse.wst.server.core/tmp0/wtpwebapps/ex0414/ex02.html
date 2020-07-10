@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>자바스크립트 함수</title>
+	<script>
+		function sum(){
+			var tot=0;
+			for(i=0; i<=100; i++){
+				tot = tot + i;
+			}
+			alert("100까지의 합 = " + tot);
+		}
+		
+		function funColor(color, back){
+			var h = document.getElementById("header");
+			h.style.color = color;
+			h.style.background = back;
+		}
+		
+		function funBack(back){
+			var name = document.getElementsByClassName('name');
+			
+			for(i=0; i<name.length; i++){
+				var n=name[i];
+				n.style.background = back;
+			}
+		}
+	</script>
+	</head>
+<body>
+	<button onClick="sum();">1~100까지의 합계</button> <!-- 버튼을 만드는 1번째 방법 -->
+	<input type="button" value="1~100까지의 합계" onClick="sum();"> <!-- 버튼을 만드는 2번째 방법 -->
+	<button onClick="location.href='http://www.naver.com'">네이버</button>
+	<hr>
+	<h1 id="header">안녕하세요!</h1>
+	<button onClick="funColor('red', 'yellow');">빨강</button>
+	<button onClick="funColor('yellow', 'pink');">노랑</button>
+	<button onClick="funColor('blue', 'yellow');">파랑</button>
+	
+	<h1 class="name">홍길동</h1>
+	<h1 class="name">심청이</h1>
+	<h1 class="name">강감찬</h1>
+	<button onClick="funBack('red');">빨강</button>
+	<button onClick="funBack('blue');">파랑</button>
+	<button onClick="funBack('yellow');">노랑</button>
+</body>
+</html>

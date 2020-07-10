@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>강좌관리</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<style>
+		body{background:#D0DAC0;}
+		#page{background:white; width:1000px; height:1000px; margin:auto;}
+		h1{text-align:center; padding-top:50px;}
+		select{height:23px;}
+		#insert{background:#5A7377; color:white; width:500px; padding:10px; margin:auto;
+				text-align:center;}
+		#tbl{margin:auto; width:520px; border:3px solid #74476A; text-align:center;
+			border-collapse:collapse;}
+		.row:hover{background:#B3ABBD}
+	</style>
+</head>
+<body>
+	<div id="page">
+		<h1>[ COURSES LIST ]</h1>
+		<div id="insert">
+			학번 : <input type="text" id="lcode" maxlength=4 size=5 value="C301">
+			성명 : <input type="text" id="lname">
+			<input type="button" id="btnSave" value="저장">
+		</div>
+		<br>
+		<table id="tbl" border=1 width=500></table>
+		<script id="temp" type="text/x-handlebars-template">
+			{{#each array}}
+				<tr class=row>
+					<td class=lcode>{{code}}</td>
+					<td>{{lname}}</td>
+					<td><button>삭제</button></td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+</body>
+<script>
+	var lcode;
+	var lname;
+	
+	$("#btnSave").on("click", function(){
+		if(!confirm("학생을 등록하시겠습니까?")) return;
+		lcode=$("#lcode").val();
+		lname=$("#lname").val();
+		
+		$.ajax({
+			type:"post",
+			url:"clist.jsp",
+			data:{"lcode":scode, "lname":sname},
+			dataType:"json",
+			success:function(data){
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+			}
+		});
+	});
+</script>
+</html>

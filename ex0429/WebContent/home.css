@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+h1{text-align:center;}
+#tbl, #etbl{text-align:center; border-collapse:collapse;
+					border:1px solid #0128da; margin:auto;}
+.title{background:#5c7afe; color:white;}
+.row:hover{background:#9aacfd; color:white;}
+button{cursor:pointer;}
+#enroll{text-align:center; display:none;}
+#students{width:700px; border:1px solid #0128da; text-align:center;
+		background:#5c7afe; color:white; margin:auto;}
+#courses{width:700px; border:1px solid #0128da; text-align:center;
+		background:#5c7afe; color:white; margin:auto; margin-top:5px; margin-bottom:5px;}

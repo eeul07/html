@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<style>
+		#box{width:440px; height:300px; border:1px solid black;
+					margin-top:10px;}
+	</style>
+</head>
+<body>
+	<input id="content" type="text" size=50>
+	<button id="btnInsert">입력</button>
+		<button id="btnDelete">삭제</button>
+	<div id="box"></div>
+</body>
+<script>
+	$("#btnInsert").on("click", function(){
+		var content=$("#content").val();
+		if(!content){
+			alert("값을 입력하세요!")
+		}
+		$("#box").append("<h5>" + content + "</h5>");
+		$("#content").val("");
+		$("#content").focus();
+	});
+</script>
+</html>

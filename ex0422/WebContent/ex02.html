@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>블로그 검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- j Query -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script> <!-- Handle bar -->
+	<style>
+	body{background:#e6f0fe;}
+	#tbl{width:700px; margin:auto; background:#1765aa;
+		 border:2px solid #1765aa; border-collapse:collapse;}
+	h1{text-align:center;}
+	#search{width:700px; margin:10px auto;}
+	#pagination{width:700px; margin:10px auto; text-align:center;}
+	.title{border:1px solid #1765aa; background:white;
+			padding:10px; text-align:center;}
+	.title:hover{background:#1765aa; color:white;}
+</style>
+</head>
+<body>
+		<h1>[ 블로그 검색 ]</h1>
+		<div id="search">
+			검색수 : <span id="total"></span>
+			<input type="text" id="txtSearch" value="설현">
+			<input type="button" id="btnSearch" value="검색">
+		</div>
+		<table id="tbl"></table>
+	<script id="temp" type="text/x-handlebars-template">
+		{{#each items}}
+			<tr>
+				<td><div class=title>{{{title}}}</div></td>
+			</tr>
+		{{/each}}
+	</script>
+	<div id="pagination">
+		<button id="btnPre">이전</button>
+		현재페이지 : <span id="page"></span>
+		<button id="btnNext">다음</button>
+	</div>
+</body>
+<script>
+	var display=15;
+	var start=1;
+	var page=1;
+	var total;
+	
+	getList();
+	
+	$("#btnNext").on("click", function(){
+		if(start+display < total){
+			start = start + display;
+			page = page + 1;
+			getList();
+		}else{
+			alert("마지막 페이지입니다.")
+		}
+	});
+	
+	$("#btnPre").on("click", function(){
+		if(start > 1){
+			start = start - display;
+			page = page - 1;
+			getList();
+		}else{
+			alert("첫 페이지입니다.")
+		}
+	});
+	
+	$("#btnSearch").on("click", function(){
+		page=1;
+		start=1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			page=1;
+			start=1;
+			getList();
+		}
+	});
+
+	function getList(){
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"blog.jsp",
+			dataType:"json",
+			data:{"query":query, "display":display, "start":start},
+			success:function(data){
+				total=data.total;
+				$("#total").html("<b>" + total + "</b>건");
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+			}
+		});
+		$("#page").html(page);
+	}
+</script>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>도서검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<style>
+		#tbl{width:850px; border-collapse:collapse;}
+		td{border:1px solid gray;}
+		.row:hover{background:orange;}
+		.thumbnail{width:130px; text-align:center;}
+		.title{width:350px; text-align:center;
+				text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		.authors{width:180px; text-align:center;
+				text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		.price{width:100px; text-align:center;}
+		.status{width:90px; text-align:center;}
+		#pagination{margin:10px;}
+	</style>
+</head>
+<body>
+	<h1>[도서검색]</h1>
+	<div id="search">
+		검색수:<span id="total"></span>
+		<input type="text" value="" id="txtSearch">
+		<input type="button" value="검색" id="btnSearch">
+	</div>
+	<br>
+	<table id="tbl"></table>
+	<div id="pagination">
+		<button id="btnPre">이전</button>
+		<button id="btnNext">다음</button>
+		현재페이지 : <span id="page"></span>
+	</div>
+</body>
+<script>
+	var page=1;
+	var is_end;
+	
+	getList();
+	
+	$("#btnNext").on("click", function(){
+		if(!is_end){
+			page=page+1;
+			getList();
+		}else{
+			alert("마지막 페이지 입니다.")
+		}
+	});
+	
+	$("#btnPre").on("click", function(){
+		if(page>1){
+			page=page-1;
+			getList();
+		}else{
+			alert("처음 페이지 입니다.")
+		}
+	});
+	
+	$("#btnSearch").on("click", function(){
+		page=1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){ // 엔터키를 눌렀을 때
+			page=1;
+			getList();
+		}
+	});
+	
+	function getList(){
+		var query=$("#txtSearch").val();
+		$("#page").html(page);
+		
+		$.ajax({
+			type:"get",
+			url:"https://dapi.kakao.com/v3/search/book?target=title",
+			headers:{"Authorization": "KakaoAK adee5ecf94538b5f76df2941d30ef6e0"},
+			dataType:"json",
+			data:{"query":query, "page":page, "size":5},
+			success:function(res){
+				var total=res.meta.pageable_count;
+				is_end=res.meta.is_end;
+				$("#total").html("<b>" + total + "</b>건"); // 굵은글씨로 출력(<b>)
+				var str="";
+				$(res.documents).each(function(){
+					var title=this.title;
+					var authors=this.authors;
+					var price=this.price;
+					var status=this.status;
+					var thumbnail=this.thumbnail;
+					str += "<tr class=row>";
+					str += "<td><div class=thumbnail><img src=" + thumbnail + "></div></td>";
+					str += "<td><div class=title>" + title + "</div></td>";
+					str += "<td><div class=authors>" + authors + "</div></td>";
+					str += "<td><div class=price>" + price + "</div></td>";
+					str += "<td><div class=status>" + status + "</div></td>";
+					str += "</tr>";
+				});
+				$("#tbl").html(str);
+			}
+		});
+	}
+</script>
+</html>

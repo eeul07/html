@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery 라이브러리</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<style>
+		div{width:300px; border:2px solid black;
+				margin:20px; text-align:center; font-size:30px;}
+	</style>
+</head>
+<body>
+	<button id="sum">1부터 100까지의 합</button>
+	<h1 id="header">안녕하세요!</h1>
+	
+	<h1 class="name">홍길동</h1>
+	<h1 class="name">심청이</h1>
+	<h1 class="name">강감찬</h1>
+	<button id="btnPink">배경색을 분홍색으로</button>
+	<button id="btnSkyblue">배경색을 하늘색으로</button>
+	<button id="btnNaver">네이버로 이동</button>
+	
+	<div>안녕하세요!</div>
+	<div>안녕하세요!</div>
+	<div>안녕하세요!</div>
+</body>
+<script>
+	$("div").hover(function(){
+		$(this).css("background", "red");
+		$(this).css("color", "white");
+	}, function(){
+		$(this).css("background", "white");
+		$(this).css("color", "black");
+	});
+
+	$("#btnNaver").on("click", function(){
+		location.href="http://www.naver.com";
+	});
+
+	$("#btnPink").on("click", function(){
+		$(".name").css("background", "pink");
+		$(".name").css("color", "white")
+	});
+	$("#btnSkyblue").on("click", function(){
+		$(".name").css("background", "skyblue");
+		$(".name").css("color", "white")
+	});
+
+	$("#header").on("click", function(){
+		$("#header").css("background", "yellow");
+	});
+
+	$("#sum").on("click", function(){
+		var sum=0;
+		for(i=0; i<=100; i++){
+			sum = sum + i;
+		}
+		alert(sum);
+	});
+</script>
+</html>

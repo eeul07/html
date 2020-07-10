@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- j Query -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script> <!-- Handle bar -->
+	<title>도서검색</title>
+	<style>
+		body{background:#fefea9;}
+		#tbl, #tbl1{width:700px; border-collapse:collapse; margin:auto;}
+		td{border:1px solid #fe4343; padding:5px;}
+		.title{width:300px;
+			text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		.sno{width:150px;
+			text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		.author{width:100px;
+			text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		.price{width:50px;
+			text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+		#search, #search1{width:680px; padding:10px; background:#fe7575; color:white;
+				border:1px solid #fe4343; margin:10px auto;}
+		#pagination{width:700px; margin:10px auto; text-align:center;}
+		.head{text-align:center; background:#fe7575; color:white;}
+		h1{text-align:center; text-shadow:3px 3px 3px gray;}
+		.row:hover{background:#fdd7d7;}
+		#page1{width:900px; height:950px; background:white; margin:auto; padding:30px;
+			box-shadow:10px 10px 10px gray; margin-top:80px;}
+		#btn, #btn1{width:700px; margin:auto;}
+	</style>
+
+</head>
+<body>
+	<div id="page1">
+		<h1>[ BOOK SEARCH ]</h1>
+		<div id="search">
+			검색수 : <span id="total"></span>
+			<input type="text" value="봉제인형" id="txtSearch">
+			<input type="button" value="검색" id="btnSearch">
+		</div>
+		<br>
+		<div id="btn">
+		<input type="button" id="btnSave" value="선택저장">
+		</div>
+		<table id="tbl"></table>
+		<script id="temp" type="text/x-handlebars-template">
+			<tr class=head>
+				<td><input type="checkbox" id=chkAll></td>
+				<td>도서명</td>
+				<td>저자</td>
+				<td>가격</td>
+			</tr>
+			{{#each items}}
+				<tr class=row>
+					<td><input type="checkbox" class=chk></td>
+					<td><div class=title>{{{title}}}</div></td>
+					<td><div class=author>{{{author}}}</div></td>
+					<td><div class=price>{{{price}}}</div></td>
+				</tr>
+			{{/each}}
+		</script>
+		<div id="pagination">
+			<button id="btnPre">이전</button>
+			현재페이지 : <span id="page"></span>
+			<button id="btnNext">다음</button>
+		</div>
+		<br>
+		<hr>
+		<br>
+		<h1>[ BOOK LIST ]</h1>
+		<div id="search1">
+			등록상품 : <span id="count"></span>
+		</div>
+		<br>
+		<div id="btn1">
+		<input type="button" id="btnDelete" value="선택삭제">
+		</div>
+		<table id="tbl1"></table>
+		<script id="temp1" type="text/x-handlebars-template">
+			<tr class=head>
+				<td><input type="checkbox" id=chkAll></td>
+				<td>도서명</td>
+				<td>저자</td>
+				<td>가격</td>
+				<td>수정</td>
+			</tr>
+			{{#each items}}
+				<tr class=row sno={{sno}}>
+					<td><input type="checkbox" class=chk></td>
+					<td><div class=title>{{{title}}}</div></td>
+					<td><div class=author>{{{author}}}</div></td>
+					<td><input type="text" value="{{{price}}}" class=price size=6></td>
+					<td><button class=btn>수정</button></td>
+				</tr>
+			{{/each}}
+		</script>
+	</div>
+</body>
+<script>
+	var display=5;
+	var start=1;
+	var page=1;
+	var total=0;
+	getList();
+	getBook();
+	
+	function getBook(){
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			dataType:"json",
+			success:function(data){
+				$("#count").html(data.total);
+				var temp=Handlebars.compile($("#temp1").html());
+				$("#tbl1").html(temp(data));
+			}
+		});
+	}
+
+	function getList(){
+		var query=$("#txtSearch").val();
+		$.ajax({
+			type:"get",
+			url:"book.jsp",
+			data:{"query":query, "display":display, "start":start},
+			dataType:"json",
+			success:function(data){
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+				total=data.total;
+				$("#total").html("<b>" + total + "</b>건");
+			}
+		});
+		$("#page").html(page);
+	}
+	
+	$("#btnSearch").on("click", function(){
+		start=1;
+		page=1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			start=1;
+			page=1;
+			getList();
+		}
+	});
+	
+	$("#btnPre").on("click", function(){
+		if(page>1){
+			page = page - 1;
+			start = start - display;
+			getList();
+		}else{
+			alert("첫 페이지입니다.")
+		}
+	});
+	
+	$("#btnNext").on("click", function(){
+		if(start+display < total){
+			page = page + 1;
+			start = start + display;
+			getList();
+		}else{
+			alert("마지막 페이지입니다.")
+		}
+	});
+	
+	// 전체선택 버튼을 클릭했을 때
+	$("#tbl").on("click", "#chkAll", function(){
+		if($(this).is(":checked")){
+			$("#tbl .row .chk").each(function(){
+				$(this).prop("checked", true);
+			});
+		}else{
+			$("#tbl .row .chk").each(function(){
+				$(this).prop("checked", false);
+			});
+		}
+	});
+	$("#tbl1").on("click", "#chkAll", function(){
+		if($(this).is(":checked")){
+			$("#tbl1 .row .chk").each(function(){
+				$(this).prop("checked", true);
+			});
+		}else{
+			$("#tbl1 .row .chk").each(function(){
+				$(this).prop("checked", false);
+			});
+		}
+	});
+	
+	// 선택저장 버튼을 클릭했을 때
+	$("#btnSave").on("click", function(){
+		if(confirm("해당 도서를 저장하시겠습니까?")==false) return;
+		$("#tbl .row .chk:checked").each(function(){
+			var row=$(this).parent().parent();
+			var title=row.find(".title").text();
+			var author=row.find(".author").text();
+			var price=row.find(".price").text();
+			$(this).prop("checked", false);
+			$.ajax({
+				type:"post",
+				url:"insert.jsp",
+				data:{"title":title, "author":author, "price":price},
+				success:function(){}
+			});
+		});
+		$("#tbl #chkAll").prop("checked", false);
+		alert("저장되었습니다.");
+		getBook();
+	});
+	
+	// 선택삭제 버튼을 클릭했을 때
+	$("#btnDelete").on("click", function(){
+		if(confirm("해당 도서를 삭제하시겠습니까?")==false) return;
+		$("#tbl1 .row .chk:checked").each(function(){
+			var row=$(this).parent().parent();
+			var sno=row.attr("sno");
+			$(this).prop("checked", false);
+			$.ajax({
+				type:"post",
+				url:"delete.jsp",
+				data:{"sno":sno},
+				success:function(){}
+			});
+		});
+		$("#tbl1 #chkAll").prop("checked", false);
+		alert("삭제되었습니다.");
+		getBook();
+	});
+
+	//수정버튼을 클릭했을때
+	   $("#tbl1").on("click", ".row button", function(){
+	      var row=$(this).parent().parent();
+	      var sno=row.attr("sno");
+	      var price=row.find(".price").val();
+	      
+	      if(confirm("해당 도서의 가격을 수정하시겠습니까?")==false) return;
+	      $.ajax({
+	         type:"post",
+	         url:"update.jsp",
+	         data:{"sno":sno,"price":price},
+	         success:function(){
+	            alert("수정되었습니다.");
+	            getBook();
+	         },
+	         error:function(){
+	            alert("수정실패");
+	         }
+	      });
+	   });
+</script>
+</html>
